@@ -24,6 +24,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base:"/Intern_AI_Assistance_Teacher/",
+  
   resolve: {
     alias: {
       // Alias @ to the src directory
