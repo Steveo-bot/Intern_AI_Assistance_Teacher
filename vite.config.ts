@@ -25,7 +25,9 @@ export default defineConfig({
     tailwindcss(),
   ],
   base:"/Intern_AI_Assistance_Teacher/",
-  
+  build:{
+    outDir:"docs",
+  },
   resolve: {
     alias: {
       // Alias @ to the src directory
