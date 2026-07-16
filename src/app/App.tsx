@@ -1991,11 +1991,13 @@ function Page6({ onNav }: { onNav: (p: number) => void }) {
 
 // ─── 页面 7：教师审核 ─────────────────────────────────────────────────────────
 
+const publicAsset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 const ORIGINAL_PAPER_REGIONS: Record<number, { src: string; label: string }> = {
-  1: { src: "/assets/student-workbook-q1.png", label: "原卷第 1 题作答区域" },
-  2: { src: "/assets/student-workbook-q2.png", label: "原卷第 2 题作答区域" },
-  3: { src: "/assets/student-workbook-q3.png", label: "原卷第 3 题作答区域" },
-  4: { src: "/assets/student-workbook-q4.png", label: "原卷第 4 题作答区域" },
+  1: { src: publicAsset("assets/student-workbook-q1.png"), label: "原卷第 1 题作答区域" },
+  2: { src: publicAsset("assets/student-workbook-q2.png"), label: "原卷第 2 题作答区域" },
+  3: { src: publicAsset("assets/student-workbook-q3.png"), label: "原卷第 3 题作答区域" },
+  4: { src: publicAsset("assets/student-workbook-q4.png"), label: "原卷第 4 题作答区域" },
 };
 
 function Page7({ onNav }: { onNav: (p: number) => void }) {
@@ -2210,7 +2212,7 @@ function Page7({ onNav }: { onNav: (p: number) => void }) {
           <div className="flex-1 min-h-0 rounded-lg border-2 border-blue-300 bg-[#ecebe7] overflow-hidden relative">
             {showFullPaper ? (
               <img
-                src="/assets/student-workbook-page.png"
+                src={publicAsset("assets/student-workbook-page.png")}
                 alt={`${student.name}的学生原卷整页`}
                 className="w-full h-full object-contain"
               />
