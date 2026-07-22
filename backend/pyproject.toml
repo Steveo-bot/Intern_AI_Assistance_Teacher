@@ -1,0 +1,23 @@
+[project]
+name = "ai-grading-backend"
+version = "0.1.0"
+description = "Backend API for AI-assisted homework grading."
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "alembic>=1.18.5",
+    "fastapi[standard]",
+    "psycopg[binary]>=3.3.4",
+    "pydantic-settings>=2.14.2",
+    "sqlalchemy>=2.0.51",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2",
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

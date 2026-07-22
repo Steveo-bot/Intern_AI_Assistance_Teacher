@@ -1,16 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   BookOpen, Zap, Edit3, Send, Upload, Cpu, CheckSquare, ClipboardList,
   TrendingUp, ChevronRight, Plus, Printer, BarChart2, Clock,
   AlertCircle, X, FileText, Users, Download, RefreshCw, Search, Bell,
   Settings, Check, XCircle, AlertTriangle, Filter,
   Award, MoreHorizontal, Star, User, ArrowLeft, Info, Bookmark, ChevronDown,
-  LayoutTemplate, Eye, PenLine, Save
+  Eye, PenLine, Save
 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, PieChart, Pie, Cell,
 } from "recharts";
+
+import {type PageId} from './config/navigation';
+import {AppShell} from './layout/AppShell';
+import {PublishWorkspace} from './pages/publish/PublishWorkspace';
 
 // ─── 基础配置 ───────────────────────────────────────────────────────────────
 
@@ -1277,6 +1281,11 @@ function Page3({
   return (
     <div className="grid grid-cols-[280px_1fr] gap-5" style={{ height: "calc(100vh - 130px)" }}>
       <div className="flex flex-col gap-3 overflow-hidden">
+        <div className="review-mode-bar" aria-label="审阅方式">
+          <button className="is-active" type="button">
+            <Eye size={15} />内容审阅
+          </button>
+        </div>
         <SCard
           title="题目列表"
           extra={
@@ -2594,35 +2603,39 @@ function Page9() {
 
 // ─── 应用入口 ─────────────────────────────────────────────────────────────────
 
-export default function App() {
-  const [page, setPage] = useState(1);
+export function App() {
+  const [page, setPage] = useState<PageId>(1);
   const [questionScores, setQuestionScores] = useState<Record<number, number>>(
     () => Object.fromEntries(QUESTIONS.map((question) => [question.id, question.maxScore]))
   );
 
+  function navigate(nextPage: number) {
+    setPage(nextPage as PageId);
+  }
+
   return (
-    <div className="flex h-screen overflow-hidden" style={{ fontFamily: "'Inter', 'Noto Sans SC', sans-serif" }}>
-      <Sidebar current={page} onNav={setPage} />
-      <div className="flex-1 flex flex-col overflow-hidden" style={{ background: "#f0f2f6" }}>
-        <AppHeader page={page} />
-        <main className="flex-1 overflow-auto p-5">
-          {page === 1 && <Page1 onNav={setPage} />}
-          {page === 2 && <Page2 onNav={setPage} />}
+    <AppShell currentPage={page} onNavigate={setPage}>
+          {page === 1 && <Page1 onNav={navigate} />}
+          {page === 2 && <Page2 onNav={navigate} />}
           {page === 3 && (
             <Page3
-              onNav={setPage}
+              onNav={navigate}
               questionScores={questionScores}
               setQuestionScores={setQuestionScores}
             />
           )}
-          {page === 4 && <Page4 onNav={setPage} questionScores={questionScores} />}
-          {page === 5 && <Page5 onNav={setPage} />}
-          {page === 6 && <Page6 onNav={setPage} />}
-          {page === 7 && <Page7 onNav={setPage} />}
-          {page === 8 && <Page8 onNav={setPage} />}
+          {page === 4 && (
+            <PublishWorkspace
+              onBackToAssignments={() => navigate(1)}
+              questionScores={questionScores}
+              questions={QUESTIONS}
+            />
+          )}
+          {page === 5 && <Page5 onNav={navigate} />}
+          {page === 6 && <Page6 onNav={navigate} />}
+          {page === 7 && <Page7 onNav={navigate} />}
+          {page === 8 && <Page8 onNav={navigate} />}
           {page === 9 && <Page9 />}
-        </main>
-      </div>
-    </div>
+    </AppShell>
   );
 }
